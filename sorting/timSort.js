@@ -1,3 +1,27 @@
+function binarySearch(array, item, start, end) {
+  if (start === end) { 
+    if(array[start] > item) {
+      return start
+    } else {
+      return start + 1
+    }
+  }
+
+  if(start > end) {
+    return start
+  }
+
+  mid = Math.round((start + end)/ 2)
+
+  if(array[mid] < item) {
+    return binarySearch(array, item, mid + 1, end)
+  } else if(array[mid] > item) {
+    return binarySearch(array, item, start, mid - 1)
+  } else {
+    return mid;
+  }
+}
+
 // Split the array into halves and merge them recursively 
 function mergeSort(arr) {
   if (arr.length === 1) {
@@ -35,18 +59,33 @@ function merge(left, right) {
 }
 
 function insertionSort (items) {
-  for (var i = 0; i < items.length; i++) {
+  let length = items.length;
+  for (var i = 0; i < length; i++) {
     let value = items[i]
-    // store the current item value so it can be placed right
-    for (var j = i - 1; j > -1 && items[j] > value; j--) {
-      // loop through the items in the sorted array (the items from the current to the beginning)
-      // copy each item to the next one
-      items[j + 1] = items[j]
-    }
-    // the last item we've reached should now hold the value of the currently sorted item
-    items[j + 1] = value
+    let position = binarySearch(items, value, 0, i - 1)
+    items = items
+      .slice(0, position)
+      .concat([value])
+      .concat(items.slice(position, i))
+      .concat(items.slice(i + 1, length))
   }
 
-  return list
+  return items;
 }
 
+function setMinRun(items) {
+
+
+}
+
+function timSort(array) {
+  let sortedArray;
+  const minRun = setMinRun(array);
+  if (array.length < 64) {
+    sortedArray = insertionSort(array)
+  }
+
+  return sortedArray;
+}
+
+console.log(insertionSort([1,2,1,8,5,9]))
